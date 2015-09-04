@@ -8,4 +8,4 @@ def index():
     return "<h1>Hello World</hi>"
 
 if __name__ == "__main__":
-    app.run(debug=True, port=80)
+    app.run(debug=True, int(os.environ.get("PORT", 5000)))
