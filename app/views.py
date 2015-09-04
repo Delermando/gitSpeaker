@@ -10,7 +10,7 @@ def index():
 
 
 def gitFileGetContent(repository, filename):
-    github = Github('delermando', 'Aslam1618033989')
+    github = Github('teste', 'teste')
     user = github.get_user()
     repository = user.get_repo( repository )
     gitFile = repository.get_contents( filename )
