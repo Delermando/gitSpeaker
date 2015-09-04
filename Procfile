@@ -1,2 +1,2 @@
-web: python helloy  .py
+web: python helloy.py
 
