@@ -6,7 +6,8 @@ import os
 
 @app.route("/")
 def index():
-    content = gitFileGetContent(os.environ.get('GITSPEAKER_GH_REPOSITORYNAME'), os.environ.get('GITSPEAKER_GH_FIRSTFILENAME'))
+    #content = gitFileGetContent(os.environ.get('GITSPEAKER_GH_REPOSITORYNAME'), os.environ.get('GITSPEAKER_GH_FIRSTFILENAME'))
+    content = 'teste'
     return render_template('index.html', content = content)
 
 
