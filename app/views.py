@@ -8,61 +8,7 @@ import os
 
 @app.route("/")
 def index():
-    #fileContent = getFileGetContent(os.environ.get('GITSPEAKER_GH_REPOSITORYNAME'), 'MarkNotUsedObejctsInFunction.py')
-    fileContent = """
-        import sublime, sublime_plugin, pprint
-        import re
-
-        class MarkNotUsedObejctsInFunction(sublime_plugin.TextCommand):
-
-            def run(self, edit):
-            print(self.view.size())
-        """
-    fileContentb = """
-    body {
-  background: #1c1e20;
-  background: -moz-radial-gradient(center, circle cover, #555a5f 0%, #1c1e20 100%);
-  background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, #555a5f), color-stop(100%, #1c1e20));
-  background: -webkit-radial-gradient(center, circle cover, #555a5f 0%, #1c1e20 100%);
-  background: -o-radial-gradient(center, circle cover, #555a5f 0%, #1c1e20 100%);
-  background: -ms-radial-gradient(center, circle cover, #555a5f 0%, #1c1e20 100%);
-  background: radial-gradient(center, circle cover, #555a5f 0%, #1c1e20 100%);
-  background-color: #2b2b2b; }
-
-.reveal {
-  font-family: 'Lato', sans-serif;
-  font-size: 36px;
-  font-weight: normal;
-  color: #eee; }
-
-::selection {
-  color: #fff;
-  background: #FF5E99;
-  text-shadow: none; }
-
-.reveal .slides > section, .reveal .slides > section > section {
-  line-height: 1.3;
-  font-weight: inherit; }
-
-/*********************************************
- * HEADERS
- *********************************************/
-.reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5, .reveal h6 {
-  margin: 0 0 20px 0;
-  color: #eee;
-  font-family: 'League Gothic', Impact, sans-serif;
-  font-weight: normal;
-  line-height: 1.2;
-  letter-spacing: normal;
-  text-transform: uppercase;
-  text-shadow: 0px 0px 6px rgba(0, 0, 0, 0.2);
-  word-wrap: break-word; }
-
-.reveal h1 {
-  font-size: 3.77em; }
-
-    """
-
+    fileContent = getFileGetContent(os.environ.get('GITSPEAKER_GH_REPOSITORYNAME'), 'MarkNotUsedObejctsInFunction.py')
     formatedContent = formatFileContent('MarkNotUsedObejctsInFunction.py', fileContent)
 
     return render_template('index.html', content = Markup( formatedContent ))
