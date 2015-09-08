@@ -1,41 +1,70 @@
 class Content(object):
 
-    def rows(self, rows, rowsNumber, contentRowsNumber):
-        contentRange = self.createCutMap(rows,rowsNumber, contentRowsNumber)
+    def rowsMdFiles(self, rows, rowsNumber, contentRowsNumber):    
+        contentRange = self.getSlideRange(rowsNumber, contentRowsNumber)
+        contentRange.append(contentRowsNumber)
         return self.groupRows(rows, contentRange, rowsNumber)
-    
-    def createCutMap(self, rows, rowsNumber, contentRowsNumber):
+
+    def rowsCodeFiles(self, rows, rowsNumber, contentRowsNumber):
         contentRange = self.getSlideRange(rowsNumber, contentRowsNumber)
         breakList = self.getBreakContentList(rows)
-        deliterList = self.calcCutDelimiter(rowsNumber, contentRange, breakList, 2)
+        problablyPositions = self.calcCutDelimiter(rowsNumber, contentRange, breakList, 2)
+        deliterList = self.calcBetterPosition(problablyPositions, contentRange, contentRowsNumber)
+        print(deliterList)
+
         if len(deliterList) != 0:
             deliterList[0] = 0
             deliterList.append(contentRowsNumber)
         else:
             deliterList.append(0)
             deliterList.append(contentRowsNumber)
-        print(deliterList)
-        return deliterList
+        return self.groupRows(rows, deliterList, rowsNumber)
 
+    def calcBetterPosition(self, problablyPositions, contentRange,contentSize):
+        del contentRange[0]
+        distanceList = {}
+        result = []
+        result.append(0)
+        counter = 0
+        for r in contentRange:
+            for i in problablyPositions:
+                calc = i-r
+                if(calc < 0 ):
+                    calc = calc*-1
+                distanceList[calc] = i
+            #    print(r,i,calc)
+            #print('----')
+            betterPosition = distanceList[sorted(distanceList.keys())[0]]
+            #print(betterPosition)
+            if betterPosition in range(r-2,r+2):
+                result.append(betterPosition)
+            else:
+                result.append(r)
+
+            distanceList = {}
+        result.append(contentSize)
+        return result
 
     def calcCutDelimiter(self, rowsNumber, contentRange, breakList, margin):
         delimiterList = []
         counter = 0
         for start in contentRange:
             end = start + rowsNumber
-
+            print(start, end)
             for bl in breakList[start:end]:
                 if bl == True and counter in (self.getMargin(start, margin) +  self.getMargin(end, margin)):
                     delimiterList.append(counter)
                 counter += 1
         return delimiterList
 
+ 
+
     def getMargin(self, pointer, margin):
         return (range((pointer - margin),(pointer + margin + 1),1))
 
     def getSlideRange(self, rowsNumber, contentRowsNumber):
         if rowsNumber <= contentRowsNumber:
-            return range(0, contentRowsNumber, int(rowsNumber))
+            return range(0, contentRowsNumber, rowsNumber)
         else:
             return [0]
 
@@ -62,5 +91,6 @@ class Content(object):
                 group += rows[r] + '\n'
             groups.append(group)
             group = ''
+        del groups[-1]
         return groups
 

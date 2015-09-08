@@ -1,4 +1,4 @@
-export GITSPEAKER_GH_CODELINESNUMBER=19
+export GITSPEAKER_GH_CODELINESNUMBER=18
 export GITSPEAKER_GH_MARKDOWNLINESNUMBER=10
 export GITSPEAKER_GH_USERNAME='user'
 export GITSPEAKER_GH_PASSWORD='pass'
@@ -157,5 +157,4 @@ class Tools(object):
         #contentList  += (userSelection,)
         #newFunctionContent = (pattern %  tuple(contentList))
         #self.insertContentByPosition(self.getViewSize(),newFunctionContent)
-        Tools.insertContentByPosition(Tools,1,'dede')
-    """
+        Tools.insertContentByPosition(Tools,1,'dede')"""
