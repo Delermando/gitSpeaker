@@ -8,9 +8,13 @@ class Content(object):
         contentRange = self.getSlideRange(rowsNumber, contentRowsNumber)
         breakList = self.getBreakContentList(rows)
         deliterList = self.calcCutDelimiter(rowsNumber, contentRange, breakList, 2)
-        deliterList[0] = 0
-        deliterList.append(contentRowsNumber)
-        return deliterList
+        if len(deliterList) != 0:
+            deliterList[0] = 0
+            deliterList.append(contentRowsNumber)
+            return deliterList
+        else:
+            return (0,contentRowsNumber)
+
 
     def calcCutDelimiter(self, rowsNumber, contentRange, breakList, margin):
         delimiterList = []
