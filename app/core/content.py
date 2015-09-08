@@ -3,6 +3,7 @@ class Content(object):
     def rowsMdFiles(self, rows, rowsNumber, contentRowsNumber):    
         contentRange = self.getSlideRange(rowsNumber, contentRowsNumber)
         contentRange.append(contentRowsNumber)
+        print(contentRange)
         return self.groupRows(rows, contentRange, rowsNumber)
 
     def rowsCodeFiles(self, rows, rowsNumber, contentRowsNumber):
