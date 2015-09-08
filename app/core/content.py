@@ -11,9 +11,11 @@ class Content(object):
         if len(deliterList) != 0:
             deliterList[0] = 0
             deliterList.append(contentRowsNumber)
-            return deliterList
         else:
-            return (0,contentRowsNumber)
+            deliterList.append(0)
+            deliterList.append(contentRowsNumber)
+        print(deliterList)
+        return deliterList
 
 
     def calcCutDelimiter(self, rowsNumber, contentRange, breakList, margin):

@@ -5,18 +5,13 @@ from app import *
 @app.route("/")
 def index():
     var = Tools.getEnviromentVar()
-    #fileContent = getFileGetContent(var['GITSPEAKER_GH_REPOSITORYNAME'], var['GITSPEAKER_GH_FIRSTFILENAME'])
-    #    return base64.b64decode(gitFile.content)
-
     user = Git.getGithubUser(var['GITSPEAKER_GH_USERNAME'], var['GITSPEAKER_GH_PASSWORD'])
     repository = Git.getRepository(user, var['GITSPEAKER_GH_REPOSITORYNAME'])
     dirContent = Git.getDirContentFromRepository(repository, '/')
-    print(base64.b64decode(dirContent[6].content))
-
 
     formatedContent = formatFileContent(
+        dirContent[6].name, 
         base64.b64decode(dirContent[6].content), 
-        base64.b64decode(dirContent[6].name), 
         int(var['GITSPEAKER_GH_MARKDOWNLINESNUMBER']), 
         int(var['GITSPEAKER_GH_CODELINESNUMBER'])
     )
@@ -30,6 +25,6 @@ def formatFileContent(filename, content, markdownLinesNumber, codeLinesNumber):
         numberOfLines = markdownLinesNumber 
     else:
         numberOfLines = codeLinesNumber
-    
+
     contentGroups = Content.rows(content.splitlines(), numberOfLines, content.count('\n'))
     return Section.set(contentGroups, Section.getPatter(extension))
