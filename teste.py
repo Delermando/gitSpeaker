@@ -1,29 +1,36 @@
 from app import *
+var = Tools.getEnviromentVar()
 
-content="""class Tools(object):
-    def getEnviromentVar(self):
+user = 'delermando'
+repositoryName = 'gitSpeaker'
+branchName = 'master'
+filePath = 'app/__init__.py'
 
-        enviromentsVar = {
-            'GITSPEAKER_GH_MARKDOWNLINESNUMBER':'',
-            'GITSPEAKER_GH_CODELINESNUMBER':'',
-            'GITSPEAKER_GH_USERNAME':'',
-            'GITSPEAKER_GH_PASSWORD':'',
-            'GITSPEAKER_GH_REPOSITORYNAME':'', 
-            'GITSPEAKER_GH_FIRSTFILENAME':'',
-            'GITSPEAKER_GH_FILECONTENT':'',
-        }
-    
-        for key, value in enviromentsVar.items():
-            enviromentsVar[key] = os.environ.get(key)
+git = Git.getGithubUser(var['GITSPEAKER_GH_USERNAME'], var['GITSPEAKER_GH_PASSWORD'])
+user = Git.getSearcUser(git, user )
+repository = Git.getRepository(user , repositoryName)
+branch = Git.getBranch( repository, branchName)
+tree = Git.getTree(repository, branch.commit.sha, True)
+fileDict = Git.extractFileListInfo(tree)
+fl = Git.checkFile(fileDict, filePath)
 
-        for key, value in enviromentsVar.items():
-            enviromentsVar[key] = os.environ.get(key)
-        return enviromentsVar
-              
-    def getFileExtension(self, filename):
-        return filename.split('.')[1]"""
+if fl == 'blob':
+    fileContent = Git.getFileContent(repository, filePath)
+    print(fileContent.name)
+elif fl == 'tree':
+    dirContent = Git.getDirContentFromRepository(repository, filePath)
+    print(dirContent)
+else:
+    print('Nao existe')
 
-rows = content.splitlines()
-content=Content.rows(rows, 20, len(rows))
-print(content[0])
-print(len(content[0].splitlines()))
+
+#if user:
+#    print(user.name)
+#    repository = getRepository(user , 'flask-sandboxe')
+#    if repository:
+#        print(repository.name)
+#        getDirContentFromRepository()
+#    else:
+#        print('Repositorio nao encontrado')    
+#else:
+#    print('Usuario nao encontrado')
