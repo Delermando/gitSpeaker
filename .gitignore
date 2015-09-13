@@ -1,3 +1,4 @@
 *.pyc
 pythonLib/
 environment
+app/mock/
