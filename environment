@@ -5,9 +5,6 @@ export GITSPEAKER_GH_PASSWORD='pass'
 export GITSPEAKER_GH_REPOSITORYNAME='Refactor'
 export GITSPEAKER_GH_FIRSTFILENAME='README.md'
 export GITSPEAKER_GH_FILECONTENT="""# Imagine, Create and Refactor #
-
-
-
 ## Introduction ##
 This is an initiative to create a tool that helps developers improve their codes of practice and rapid way. This is a first version of this tool initially focused on PHP, but which will be expanded to other programmming languages and more features.  
 
