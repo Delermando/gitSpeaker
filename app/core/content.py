@@ -2,8 +2,7 @@ class Content(object):
 
     def rowsMdFiles(self, rows, rowsNumber, contentRowsNumber):    
         contentRange = self.getSlideRange(rowsNumber, contentRowsNumber)
-        contentRange.append(contentRowsNumber)
-        print(contentRange)
+        contentRange.append(contentRowsNumber+1)
         return self.groupRows(rows, contentRange, rowsNumber)
 
     def rowsCodeFiles(self, rows, rowsNumber, contentRowsNumber):
@@ -11,7 +10,6 @@ class Content(object):
         breakList = self.getBreakContentList(rows)
         problablyPositions = self.calcCutDelimiter(rowsNumber, contentRange, breakList, 2)
         deliterList = self.calcBetterPosition(problablyPositions, contentRange, contentRowsNumber)
-        print(deliterList)
 
         if len(deliterList) != 0:
             deliterList[0] = 0
@@ -51,7 +49,6 @@ class Content(object):
         counter = 0
         for start in contentRange:
             end = start + rowsNumber
-            print(start, end)
             for bl in breakList[start:end]:
                 if bl == True and counter in (self.getMargin(start, margin) +  self.getMargin(end, margin)):
                     delimiterList.append(counter)
@@ -92,6 +89,5 @@ class Content(object):
                 group += rows[r] + '\n'
             groups.append(group)
             group = ''
-        del groups[-1]
         return groups
 
