@@ -25,7 +25,6 @@ def slide(path):
     #fl = Git.checkFile(fileDict, urlParams['path'])
 
     response = Markup(formatFileContent(var['GITSPEAKER_GH_FIRSTFILENAME'], var['GITSPEAKER_GH_FILECONTENT'], int(var['GITSPEAKER_GH_MARKDOWNLINESNUMBER']), int(var['GITSPEAKER_GH_CODELINESNUMBER']) ))
-    print(response)
     #if fl == 'blob':
     #    gitFl = Git.getFileContent(repository, urlParams['path'])
     #    response = Markup(formatFileContent(gitFl.name, base64.b64decode(gitFl.content), int(var['GITSPEAKER_GH_MARKDOWNLINESNUMBER']), int(var['GITSPEAKER_GH_CODELINESNUMBER']) ))
@@ -42,8 +41,10 @@ def slide(path):
 
 def formatFileContent(filename, content, markdownLinesNumber, codeLinesNumber):
     extension = Tools.getFileExtension(filename)
+    rows = content.splitlines()
+    rowsLen = len(rows)
     if(extension == 'md'):
-        contentGroups = Content.rowsMdFiles(content.splitlines(), markdownLinesNumber, content.count('\n'))
+        contentGroups = Content.rowsMdFiles(rows, markdownLinesNumber, rowsLen)
     else:
-        contentGroups = Content.rowsCodeFiles(content.splitlines(), codeLinesNumber, content.count('\n'))
+        contentGroups = Content.rowsCodeFiles(rowsLen, codeLinesNumber, rowsLen)
     return Section.set(contentGroups, Section.getPatter(extension))

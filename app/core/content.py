@@ -2,8 +2,25 @@ class Content(object):
 
     def rowsMdFiles(self, rows, rowsNumber, contentRowsNumber):    
         contentRange = self.getSlideRange(rowsNumber, contentRowsNumber)
-        contentRange.append(contentRowsNumber+1)
-        return self.groupRows(rows, contentRange, rowsNumber)
+        contentRange.append(contentRowsNumber)
+        listContent = self.groupRows(rows, contentRange)
+        #listContent = self.setUncloseMark("/*---","/*---","---*/", listContent)
+        listContent = self.setUncloseMark('```','```js \n','```', listContent)
+
+        return listContent
+
+    def setUncloseMark(self,markSearch, markBegin, markEnd, listContent):
+        result = []
+        counter = 0
+        for content in listContent:
+            if content.count(markSearch) == 1:
+                result.append(content + markEnd)
+                listContent[counter + 1] = markBegin + listContent[counter + 1]
+            else:
+                result.append(content)
+            counter += 1
+        return result
+
 
     def rowsCodeFiles(self, rows, rowsNumber, contentRowsNumber):
         contentRange = self.getSlideRange(rowsNumber, contentRowsNumber)
@@ -17,7 +34,7 @@ class Content(object):
         else:
             deliterList.append(0)
             deliterList.append(contentRowsNumber)
-        return self.groupRows(rows, deliterList, rowsNumber)
+        return self.groupRows(rows, deliterList)
 
     def calcBetterPosition(self, problablyPositions, contentRange,contentSize):
         del contentRange[0]
@@ -80,14 +97,17 @@ class Content(object):
 
 
 
-    def groupRows(self, rows, contentRange, rowsNumber):
+    def groupRows(self, rows, contentRange):
+        print(len(rows),contentRange)
         groups = []
         group = ''
         times = len(contentRange) - 1
         for t in range(times):
+            #print(range(contentRange[t],contentRange[t+1],1))
             for r in range(contentRange[t],contentRange[t+1],1):
                 group += rows[r] + '\n'
             groups.append(group)
             group = ''
         return groups
+
 
