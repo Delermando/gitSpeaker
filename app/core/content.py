@@ -4,12 +4,27 @@ class Content(object):
         contentRange = self.getSlideRange(rowsNumber, contentRowsNumber)
         contentRange.append(contentRowsNumber)
         listContent = self.groupRows(rows, contentRange)
-        #listContent = self.setUncloseMark("/*---","/*---","---*/", listContent)
-        listContent = self.setUncloseMark('```','```js \n','```', listContent)
+        
+        listContent = self.setUncloseMark("/*---","---*/", listContent)
+        listContent = self.closeBacktick('```','```js \n','```', listContent)
 
         return listContent
 
-    def setUncloseMark(self,markSearch, markBegin, markEnd, listContent):
+    def setUncloseMark(self,markBegin, markEnd, listContent):
+        result = []
+        counter = 0
+        for content in listContent:
+            if content.count(markBegin) == 1 and content.count(markEnd) == 1:
+                result.append(content)
+            elif content.count(markBegin) == 1:
+                result.append(content + markEnd)
+                listContent[counter + 1] = markBegin + listContent[counter + 1]
+            else:
+                result.append(content + markBegin)
+            counter += 1
+        return result
+
+    def closeBacktick(self,markSearch, markBegin, markEnd, listContent):
         result = []
         counter = 0
         for content in listContent:
@@ -98,7 +113,6 @@ class Content(object):
 
 
     def groupRows(self, rows, contentRange):
-        print(len(rows),contentRange)
         groups = []
         group = ''
         times = len(contentRange) - 1
