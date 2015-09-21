@@ -10,6 +10,9 @@ class Section(object):
 
         return html
 
+    def setWrapper(self, content, sectionPattner):
+        return sectionPattner % content
+
     def getPatter( self, fileExtension ):
         markdown = "<section data-markdown>%s</section>"
         code = "<section><pre><code>%s</code></pre></section>"

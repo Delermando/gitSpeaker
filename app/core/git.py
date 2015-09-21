@@ -56,6 +56,7 @@ class Git(object):
         return fileDict
 
     def checkFile(self, fileDict, filePath):
+        print(filePath)
         if fileDict.has_key(filePath):
             return fileDict[filePath]
         else:
