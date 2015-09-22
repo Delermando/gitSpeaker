@@ -16,7 +16,7 @@ class GitSpeaker(object):
                 print(gitFl['name'])
                 response += Markup(self.formatFileContentWrapper(gitFl['name'], gitFl['contents'], numbMarkDownLines, numberCodeLines ).decode('utf-8'))
         else:
-            response = Markup(self.formatFileContentWrapper(files['name'], files['contents'], numbMarkDownLines, numberCodeLines ).decode('utf-8'))
+            response = Markup(self.formatFileContentWrapper(files[0]['name'], files[0]['contents'], numbMarkDownLines, numberCodeLines ).decode('utf-8'))
         return response
 
     def getFileContents(self,files):

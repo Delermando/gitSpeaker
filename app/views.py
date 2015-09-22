@@ -15,8 +15,7 @@ def apresentation():
 def wrapper(path):
     var = Tools.getEnviromentVar()
     urlParams = Git.extractUserRepoInfo(path)
-    print(urlParams)
-    
+
     if var['GITSPEAKER_GH_ENVIRONMENT'] == 'prod':
         gitFiles = Git.getContents(var['GITSPEAKER_GH_USERNAME'], var['GITSPEAKER_GH_PASSWORD'], urlParams['user'], urlParams['repository'], 'master')
         response = GitSpeaker.getFileContents(gitFiles)
