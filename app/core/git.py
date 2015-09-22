@@ -7,9 +7,15 @@ class Git(object):
     def getGithubUser(self, userName, password):
         return self.Github(userName, password)
 
+    def sanitizeGitUrl( self, url ):
+        gitPath = url.split('/')
+        if url.count('blob') > 0 or url.count('tree') > 0:    
+            del gitPath[2:4]
+        return gitPath
+
     def extractUserRepoInfo(self, path ):
         result = {}
-        gitPath = path.split('/')
+        gitPath = self.sanitizeGitUrl( path )
         result['user'] = gitPath[0]
         result['repository'] = gitPath[1]
         result['path'] = '/'.join(gitPath[2:])
