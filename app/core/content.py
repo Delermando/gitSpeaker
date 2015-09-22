@@ -3,11 +3,9 @@ class Content(object):
     def rowsMdFiles(self, rows, rowsNumber, contentRowsNumber):    
         contentRange = self.getSlideRange(rowsNumber, contentRowsNumber)
         contentRange.append(contentRowsNumber)
-        listContent = self.groupRows(rows, contentRange)
-        
+        listContent = self.groupRows(rows, contentRange)        
         listContent = self.setUncloseMark("/*---","---*/", listContent)
-        listContent = self.closeBacktick('```','```js \n','```', listContent)
-
+        listContent = self.closeBacktick('```','```js\n ','```', listContent)
         return listContent
 
     def setUncloseMark(self,markBegin, markEnd, listContent):
@@ -20,7 +18,7 @@ class Content(object):
                 result.append(content + markEnd)
                 listContent[counter + 1] = markBegin + listContent[counter + 1]
             else:
-                result.append(content + markBegin)
+                result.append(content)
             counter += 1
         return result
 
@@ -63,10 +61,7 @@ class Content(object):
                 if(calc < 0 ):
                     calc = calc*-1
                 distanceList[calc] = i
-            #    print(r,i,calc)
-            #print('----')
             betterPosition = distanceList[sorted(distanceList.keys())[0]]
-            #print(betterPosition)
             if betterPosition in range(r-2,r+2):
                 result.append(betterPosition)
             else:
@@ -110,18 +105,14 @@ class Content(object):
             counter += 1
         return breakMap
 
-
-
     def groupRows(self, rows, contentRange):
         groups = []
         group = ''
         times = len(contentRange) - 1
         for t in range(times):
-            #print(range(contentRange[t],contentRange[t+1],1))
             for r in range(contentRange[t],contentRange[t+1],1):
                 group += rows[r] + '\n'
             groups.append(group)
             group = ''
         return groups
-
-
+    

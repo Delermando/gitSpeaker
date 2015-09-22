@@ -6,7 +6,6 @@ class Git(object):
 
     def getGithubUser(self, userName, password):
         return self.Github(userName, password)
-        #return github.get_user()   
 
     def extractUserRepoInfo(self, path ):
         result = {}
@@ -56,7 +55,6 @@ class Git(object):
         return fileDict
 
     def checkFile(self, fileDict, filePath):
-        print(filePath)
         if fileDict.has_key(filePath):
             return fileDict[filePath]
         else:
@@ -67,3 +65,18 @@ class Git(object):
 
     def getDirContentFromRepository(self, repository, dirName):
         return repository.get_dir_contents( dirName )
+
+    def getContents(self, username,password, searchUser, searchRepo, branchName, ):
+        git = Git.getGithubUser(username, password)
+        user = Git.getSearcUser(git, searchUser )
+        repository = Git.getRepository(user , searchRepo)
+        branch = Git.getBranch( repository, branchName)
+        tree = Git.getTree(repository, branch.commit.sha, True)
+        fileDict = Git.extractFileListInfo(tree)
+        flType = Git.checkFile(fileDict, urlParams['path'])
+
+        if flType == 'blob':
+            result = Git.getFileContent(repository, urlParams['path'])
+        else:
+            result = Git.getDirContentFromRepository(repository, urlParams['path'])
+        return {'type':flType, 'file': result }

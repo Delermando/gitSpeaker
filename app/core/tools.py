@@ -1,9 +1,12 @@
 import os
+import glob
+
 
 class Tools(object):
 
     def getEnviromentVar(self):
         enviromentsVar = {
+            'GITSPEAKER_GH_ENVIRONMENT':'',
             'GITSPEAKER_GH_MARKDOWNLINESNUMBER':'',
             'GITSPEAKER_GH_CODELINESNUMBER':'',
             'GITSPEAKER_GH_USERNAME':'',
@@ -12,7 +15,7 @@ class Tools(object):
             'GITSPEAKER_GH_FIRSTFILENAME':'',
             'GITSPEAKER_GH_FILECONTENT':'',
         }
-
+        
         for key, value in enviromentsVar.items():
             enviromentsVar[key] = os.environ.get(key)
 
@@ -21,3 +24,9 @@ class Tools(object):
             
     def getFileExtension(self, filename):
         return filename.split('.')[1]
+
+    def getLocalContent( self, urlPath ):
+        return open(urlPath).read()
+
+    def getLocalFileList(self, path, operator):
+        return sorted(glob.glob('app/mock/'+path + operator))
