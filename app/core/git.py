@@ -9,6 +9,10 @@ class Git(object):
 
     def sanitizeGitUrl( self, url ):
         gitPath = url.split('/')
+
+        if gitPath[-1] == '':
+           del gitPath[-1] 
+
         if url.count('blob') > 0 or url.count('tree') > 0:    
             del gitPath[2:4]
         return gitPath
@@ -72,17 +76,17 @@ class Git(object):
     def getDirContentFromRepository(self, repository, dirName):
         return repository.get_dir_contents( dirName )
 
-    def getContents(self, username,password, searchUser, searchRepo, branchName, ):
-        git = Git.getGithubUser(username, password)
-        user = Git.getSearcUser(git, searchUser )
-        repository = Git.getRepository(user , searchRepo)
-        branch = Git.getBranch( repository, branchName)
-        tree = Git.getTree(repository, branch.commit.sha, True)
-        fileDict = Git.extractFileListInfo(tree)
-        flType = Git.checkFile(fileDict, urlParams['path'])
+    def getContents(self, username,password, searchUser, searchRepo, path, branchName):
+        git = self.getGithubUser(username, password)
+        user = self.getSearcUser(git, searchUser )
+        repository = self.getRepository(user , searchRepo)
+        branch = self.getBranch( repository, branchName)
+        tree = self.getTree(repository, branch.commit.sha, True)
+        fileDict = self.extractFileListInfo(tree)
+        flType = self.checkFile(fileDict, path)
 
         if flType == 'blob':
-            result = Git.getFileContent(repository, urlParams['path'])
+            result = self.getFileContent(repository, path)
         else:
-            result = Git.getDirContentFromRepository(repository, urlParams['path'])
+            result = self.getDirContentFromRepository(repository, path)
         return {'type':flType, 'file': result }

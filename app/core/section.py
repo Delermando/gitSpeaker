@@ -1,6 +1,6 @@
 
 class Section(object):
-    def set(self, content, sectionPattner):
+    def setWrapper(self, content, sectionPattner):
         html = ''
         for slide in content:
             html += sectionPattner % slide        
@@ -10,10 +10,10 @@ class Section(object):
 
         return html
 
-    def setWrapper(self, content, sectionPattner):
+    def set(self, content, sectionPattner):
         return sectionPattner % content
 
-    def getPatter( self, fileExtension ):
+    def getPattern( self, fileExtension ):
         markdown = "<section data-markdown>%s</section>"
         code = "<section><pre><code>%s</code></pre></section>"
         if fileExtension == 'md':
