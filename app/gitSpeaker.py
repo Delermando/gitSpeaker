@@ -55,5 +55,5 @@ class GitSpeaker(object):
         if(extension == 'md'):
             contentGroups = Content.rowsMdFiles(rows, markdownLinesNumber, rowsLen)
         else:
-            contentGroups = Content.rowsCodeFiles(rowsLen, codeLinesNumber, rowsLen)
+            contentGroups = Content.rowsCodeFiles(rows, codeLinesNumber, rowsLen)
         return Section.setWrapper(contentGroups, Section.getPattern(extension))

@@ -61,7 +61,11 @@ class Content(object):
                 if(calc < 0 ):
                     calc = calc*-1
                 distanceList[calc] = i
-            betterPosition = distanceList[sorted(distanceList.keys())[0]]
+            if len(distanceList.keys()) > 1:
+                betterPosition = distanceList[sorted(distanceList.keys())[0]]
+            else:
+                betterPosition = 0
+                
             if betterPosition in range(r-2,r+2):
                 result.append(betterPosition)
             else:
