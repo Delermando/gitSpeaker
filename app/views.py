@@ -24,7 +24,7 @@ def wrapper(path):
         filesContents = []
         for flPath in fileList:
             filesContents.append({'name':flPath, 'contents': Tools.getLocalContent(flPath)})
-        response = GitSpeaker.getLocalFileContents(filesContents,int(var['GITSPEAKER_GH_MARKDOWNLINESNUMBER']), int(var['GITSPEAKER_GH_CODELINESNUMBER']))
+        response = GitSpeaker.getWrapperLocalFileContents(filesContents,int(var['GITSPEAKER_GH_MARKDOWNLINESNUMBER']), int(var['GITSPEAKER_GH_CODELINESNUMBER']))
     return render_template('slide.html', content = response)
 
 
@@ -38,8 +38,10 @@ def slide(path):
         response = GitSpeaker.getFileContents(gitFiles)
         
     else:
-        var['GITSPEAKER_GH_FILECONTENT'] = open( 'app/mock/' + path).read().decode('utf-8')
-        response = Markup(GitSpeaker.formatFileContent(var['GITSPEAKER_GH_FIRSTFILENAME'], var['GITSPEAKER_GH_FILECONTENT'] ))
-    
+        fileList = Tools.getLocalFileList(path, '*')
+        filesContents = []
+        for flPath in fileList:
+            filesContents.append({'name':flPath, 'contents': Tools.getLocalContent(flPath)})
+        response = GitSpeaker.getLocalFileContents(filesContents)
     return render_template('slide.html', content = response)
 

@@ -26,7 +26,7 @@ class Tools(object):
         return filename.split('.')[1]
 
     def getLocalContent( self, urlPath ):
-        return open(urlPath).read()
+        return open(urlPath).read().decode('utf-8')
 
     def getLocalFileList(self, path, operator):
         return sorted(glob.glob('app/mock/'+path + operator))
