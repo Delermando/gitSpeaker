@@ -1,6 +1,7 @@
 from flask import Markup
 import base64
 from app import *
+import datetime
 
 class GitSpeaker(object):
 
@@ -52,3 +53,8 @@ class GitSpeaker(object):
         else:
             contentGroups = Content.rowsCodeFiles(rows, codeLinesNumber, rowsLen)
         return Section.setWrapper(contentGroups, Section.getPattern(extension))
+
+    def saveUrlRepo(self, path):
+        ar = models.gs_repositoryAccessed(url=path, acessDate=datetime.datetime.utcnow())
+        db.session.add(ar)
+        return db.session.commit()
