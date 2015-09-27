@@ -107,9 +107,9 @@ class Git(object):
                 result = {path: filelist[path]}
             else:
                 for key, value in filelist.iteritems():
-                    if key.count(path) >= 1 and value == 'tree':
+                    if key.count(path+'/') >= 1:
                         filesInFolder[key] = value
-
+                print(filesInFolder)
                 if len(filesInFolder) >= 1:
                     result = filesInFolder
                 else:
