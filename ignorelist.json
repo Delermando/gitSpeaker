@@ -11,7 +11,8 @@
         ".docx",
         ".ppt",
         ".pptx",
-        ".xls"
+        ".xls",
+        ".db"
     ],
     "files":[
         ".gitignore"
