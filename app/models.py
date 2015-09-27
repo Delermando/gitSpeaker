@@ -3,7 +3,7 @@ from datetime import datetime
 
 class gs_repositoryAccessed(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    url = db.Column(db.String(64), index=True, unique=True)
+    url = db.Column(db.String(64))
     acessDate = db.Column(db.DateTime)
 
 
