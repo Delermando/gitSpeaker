@@ -2,6 +2,7 @@ from flask import render_template
 from flask import Markup
 import base64
 from app import *
+from app import models
 from gitSpeaker import GitSpeaker
 
 GitSpeaker = GitSpeaker()
@@ -16,6 +17,7 @@ def wrapper(path):
     var = Tools.getEnviromentVar()
     urlParams = Git.extractUserRepoInfo(path)
     ignorelist = Tools.getIgnoreList('ignorelist.json')
+    print(GitSpeaker.saveUrlRepo(path))
 
     if var['GITSPEAKER_GH_ENVIRONMENT'] == 'prod':
         gitFiles = Git.getContents(var['GITSPEAKER_GH_USERNAME'], var['GITSPEAKER_GH_PASSWORD'], urlParams['user'], urlParams['repository'], urlParams['path'], 'master', ignorelist)
@@ -35,6 +37,8 @@ def slide(path):
     var = Tools.getEnviromentVar()
     ignorelist = Tools.getIgnoreList('ignorelist.json')
     urlParams = Git.extractUserRepoInfo(path)
+    print(GitSpeaker.saveUrlRepo(path))
+
     if var['GITSPEAKER_GH_ENVIRONMENT'] == 'prod':
         gitFiles = Git.getContents(var['GITSPEAKER_GH_USERNAME'], var['GITSPEAKER_GH_PASSWORD'], urlParams['user'], urlParams['repository'], urlParams['path'], 'master', ignorelist)
         response = GitSpeaker.getFileContents(gitFiles)     
