@@ -41,6 +41,7 @@ def slide(path):
 
     if var['GITSPEAKER_GH_ENVIRONMENT'] == 'prod':
         gitFiles = Git.getContents(var['GITSPEAKER_GH_USERNAME'], var['GITSPEAKER_GH_PASSWORD'], urlParams['user'], urlParams['repository'], urlParams['path'], 'master', ignorelist)
+        print(gitFiles)
         response = GitSpeaker.getFileContents(gitFiles)     
     else:
         fileList = Tools.getLocalFileList(path)
