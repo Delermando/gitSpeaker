@@ -2,3 +2,4 @@
 pythonLib/
 environment
 app/mock/*
+*.db
