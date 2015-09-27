@@ -99,7 +99,8 @@
       }]
     });
     Reveal.addEventListener( 'ready', function( event ) {
-        Reveal.add = function( content = '',index = -1 ){ 
+        //Reveal.add = function( content = '',index = -1 ){ 
+        Reveal.add = function( content ,index ){ 
             dom = {},
 
             dom.slides = document.querySelector( '.reveal .slides' );
@@ -118,7 +119,7 @@
             }
             newSlide.innerHTML = content;
         };
-        Reveal.remove = function( index = -1 ){ 
+        Reveal.remove = function( index ){ 
             dom = {},
 
             dom.wrapper = document.querySelector( '.reveal' );
