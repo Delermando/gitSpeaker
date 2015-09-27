@@ -1,7 +1,7 @@
 <html lang="pt">    
 <head>
     <meta charset="utf-8">
-    <title>Git Speak</title>
+    <title>GitSpeak</title>
     <link rel="stylesheet" href="/static/css/reveal.css">
     <link rel="stylesheet" href="/static/css/theme/night.css" id="theme"> 
     <link rel="stylesheet" href="/static/lib/css/zenburn.css">
@@ -16,11 +16,79 @@
         .reveal .slides {
             text-align: left !important;
         }
+        #formOpenUrl{
+          float: right;
+          margin-right: 3em;
+          margin-top: 2em;
+        }
+        #formOpenUrl #inputRepositoryUrl {
+          width: 25em;
+          height: 2em;
+          background-color: rgb(97, 97, 97);
+          border-radius: 6px;
+          border: 0px none;
+          color: rgb(255, 255, 255);
+          padding-left: 15px;
+        }
+        #formOpenUrl #selectSlideType {
+            height: 2em;
+            width: 6.5em;
+        }
+        #formOpenUrl #buttonOpenRepositoryUrl{
+          height: 2em;
+          width: 6.5em;
+        }
     </style>
     <!--Add support for earlier versions of Internet Explorer -->
     <!--[if lt IE 9]>
     <script src="/static/lib/js/html5shiv.js"></script>
     <![endif]-->
+    <script type="text/javascript">
+      function urlSanitize(url){
+        url = url.replace("https://", "");
+        url = url.replace("http://", "");
+        url = url.replace('www.github.com','')
+        url = url.replace('github.com','')
+
+        if(url.slice(-1)[0] == "/"){
+          url = url.substring(url.length -1, '')
+        }
+
+        arraySplit = url.split('/')
+        if(arraySplit.length > 2){
+            urlEnd = arraySplit.join('/')
+            if (urlEnd[0] == '/'){
+              return urlEnd
+            }else{
+              return "/"+urlEnd
+            } 
+        }else if(arraySplit.length == 2 && arraySplit[0] != ""){
+          urlEnd = arraySplit.join('/')
+            if (urlEnd[0] == '/'){
+              return urlEnd
+            }else{
+              return "/"+urlEnd
+            } 
+        }else{
+          return false
+        }
+      }
+      function openSlide(){
+        repositoryUrl = urlSanitize(document.getElementById('inputRepositoryUrl').value);
+        slideType = document.getElementById("selectSlideType").value;
+        if(repositoryUrl){
+          if(slideType == 'normal'){
+            url = repositoryUrl
+          }else{
+            url = 'wrapper'+repositoryUrl
+          }
+          window.open(url, '_blank');    
+        }else{
+          alert('URL, are missing more params!')
+        } 
+      }
+
+    </script>
     <script>
     if (window.location.search.match(/print-pdf/gi)) {
       var link = document.createElement('link');
@@ -34,6 +102,16 @@
 </head>
  
 <body>
+    <div id='formOpenUrl'>
+      <form>
+        <input id="inputRepositoryUrl" type="text" name="name" placeholder="Repository URL" />
+        <select id="selectSlideType">
+          <option value="normal">Normal</option>
+          <option value="wrapper">Wrapper</option>
+        </select>
+        <button id="buttonOpenRepositoryUrl" onclick="openSlide()" type="button">Go!</button>
+      </form>
+    </div>
     <div class="reveal">
         <div class="slides">
             <section>
