@@ -15,12 +15,13 @@ def apresentation():
 def wrapper(path):
     var = Tools.getEnviromentVar()
     urlParams = Git.extractUserRepoInfo(path)
+    ignorelist = Tools.getIgnoreList('ignorelist.json')
 
     if var['GITSPEAKER_GH_ENVIRONMENT'] == 'prod':
-        gitFiles = Git.getContents(var['GITSPEAKER_GH_USERNAME'], var['GITSPEAKER_GH_PASSWORD'], urlParams['user'], urlParams['repository'], urlParams['path'], 'master')
+        gitFiles = Git.getContents(var['GITSPEAKER_GH_USERNAME'], var['GITSPEAKER_GH_PASSWORD'], urlParams['user'], urlParams['repository'], urlParams['path'], 'master', ignorelist)
         response = GitSpeaker.getWrapperFileContents(gitFiles)
     else:
-        fileList = Tools.getLocalFileList(path, '*')
+        fileList = Tools.getLocalFileList(path)
         filesContents = []
         for flPath in fileList:
             filesContents.append({'name':flPath, 'contents': Tools.getLocalContent(flPath)})
@@ -32,13 +33,13 @@ def wrapper(path):
 @app.route('/<path:path>')
 def slide(path):
     var = Tools.getEnviromentVar()
+    ignorelist = Tools.getIgnoreList('ignorelist.json')
     urlParams = Git.extractUserRepoInfo(path)
     if var['GITSPEAKER_GH_ENVIRONMENT'] == 'prod':
-        gitFiles = Git.getContents(var['GITSPEAKER_GH_USERNAME'], var['GITSPEAKER_GH_PASSWORD'], urlParams['user'], urlParams['repository'], urlParams['path'], 'master')
-        response = GitSpeaker.getFileContents(gitFiles)
-        
+        gitFiles = Git.getContents(var['GITSPEAKER_GH_USERNAME'], var['GITSPEAKER_GH_PASSWORD'], urlParams['user'], urlParams['repository'], urlParams['path'], 'master', ignorelist)
+        response = GitSpeaker.getFileContents(gitFiles)     
     else:
-        fileList = Tools.getLocalFileList(path, '*')
+        fileList = Tools.getLocalFileList(path)
         filesContents = []
         for flPath in fileList:
             filesContents.append({'name':flPath, 'contents': Tools.getLocalContent(flPath)})

@@ -1,0 +1,25 @@
+{
+    "extensions":[
+        ".pyc",
+        ".pdf",
+        ".tar",
+        ".tar.gz",
+        ".gz",
+        ".rar",
+        ".zip",
+        ".doc",
+        ".docx",
+        ".ppt",
+        ".pptx",
+        ".xls",
+    ],
+    "files":[
+        ".gitignore"
+    ],
+    "folders":[
+        "vendor",
+        "nbproject"
+
+    ]
+
+}

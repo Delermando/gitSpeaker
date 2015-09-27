@@ -26,15 +26,11 @@ class Git(object):
         return result
 
     def getSearcUser(self,git, username ):
-        git.legacy_search_users( username )
         try:
             searchUser = git.legacy_search_users( username )
-            counter = 0
             for user in searchUser:
-                if counter >= 2:
-                    return False
-                counter += 1
-            return user
+                if user.login == username:
+                    return user
         except Exception:
             return False
 
@@ -69,6 +65,12 @@ class Git(object):
             return fileDict[filePath]
         else:
             return False
+    def getFileContentsByList(self, repository, listfile):
+        files = []
+        for key, value in listfile.iteritems(): 
+            files.append(self.getFileContent(repository, key))
+        return files
+
 
     def getFileContent(self, repository, path):
         return repository.get_file_contents( path )
@@ -76,17 +78,59 @@ class Git(object):
     def getDirContentFromRepository(self, repository, dirName):
         return repository.get_dir_contents( dirName )
 
-    def getContents(self, username,password, searchUser, searchRepo, path, branchName):
+    def getContents(self, username,password, searchUser, searchRepo, path, branchName, ignoreList):
         git = self.getGithubUser(username, password)
         user = self.getSearcUser(git, searchUser )
         repository = self.getRepository(user , searchRepo)
         branch = self.getBranch( repository, branchName)
-        tree = self.getTree(repository, branch.commit.sha, True)
-        fileDict = self.extractFileListInfo(tree)
-        flType = self.checkFile(fileDict, path)
+        treeFiles = self.getTree(repository, branch.commit.sha, True)
+        fileDict = self.extractFileListInfo(treeFiles)
+        fileDictRemovedFolders = self.removeFolderFromList(fileDict)
+        filesFromPath = self.getFilesFromPath(fileDictRemovedFolders, path)
+        clearDict = self.removeFilesInIgnoreList(filesFromPath, ignoreList)
+        return self.getFileContentsByList(repository, clearDict)
 
-        if flType == 'blob':
-            result = self.getFileContent(repository, path)
+    def removeFolderFromList(self, filelist):
+        result = {}
+        for key, value in filelist.iteritems():
+            if value != 'tree':
+                result[key] = value
+        return result
+
+    def getFilesFromPath(self, filelist, path):
+        filesInFolder = {}
+        if path == '' or path == '/':
+            return filelist
         else:
-            result = self.getDirContentFromRepository(repository, path)
-        return {'type':flType, 'file': result }
+            for key, value in filelist.iteritems():
+                if key.count(path+'/') >= 1:
+                    filesInFolder[key] = value
+            return filesInFolder
+
+    def removeFilesInIgnoreList(self, filelist, ignorelist):
+        removelist = []
+        for key, value in filelist.iteritems():
+            if value == 'blob':
+                remove = self.getListFilesToRemove(key, ignorelist['files'] + ignorelist['extensions']+ignorelist['folders'])
+
+            if remove:
+                removelist.append(key)
+        
+        return self.removeFilesFromList(filelist, removelist)
+
+    def getListFilesToRemove( self, filename, fileRemove):
+        for fr in fileRemove:
+            if filename.count(fr) >= 1:
+                return True
+        return False
+
+    def getListFilesToRemoveByFolderName( self, filename, folderRemove):
+        for fr in folderRemove:
+            if filename.count(fr) >= 1:
+                return True
+        return False
+
+    def removeFilesFromList( self, filelist, listFilesToRemove):
+        for fl in listFilesToRemove:
+            del filelist[fl]
+        return filelist

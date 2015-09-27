@@ -1,6 +1,6 @@
 import os
 import glob
-
+import json
 
 class Tools(object):
 
@@ -28,5 +28,15 @@ class Tools(object):
     def getLocalContent( self, urlPath ):
         return open(urlPath).read().decode('utf-8')
 
-    def getLocalFileList(self, path, operator):
-        return sorted(glob.glob('app/mock/'+path + operator))
+    def getLocalFileList(self, path):
+        if path[-1] == '/':
+            fileList = sorted(glob.glob('app/mock/'+path + "*"))
+        else:
+            fileList = sorted(glob.glob('app/mock/'+path))
+
+        return fileList
+
+    def getIgnoreList(self,fileIgnoreList):
+        with open(fileIgnoreList) as data_file:    
+            data = json.load(data_file)
+        return data

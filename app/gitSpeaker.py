@@ -8,11 +8,8 @@ class GitSpeaker(object):
     def getFileContents(self,files):
         var = Tools.getEnviromentVar()
         response = ''
-        if files['type'] == 'tree':
-            for gitFl in files['file']:
-                response += Markup(self.formatFileContent(gitFl.name, base64.b64decode(gitFl.content).decode('utf-8')))
-        else:
-            response = Markup(self.formatFileContent(files['file'].name, base64.b64decode(files['file'].content).decode('utf-8')))
+        for gitFl in files:
+            response += Markup(self.formatFileContent(gitFl.name, base64.b64decode(gitFl.content).decode('utf-8')))
         return response
 
     def getLocalFileContents(self,files):
@@ -26,11 +23,9 @@ class GitSpeaker(object):
     def getWrapperFileContents(self,files):
         var = Tools.getEnviromentVar()
         response = ''
-        if files['type'] == 'tree':
-            for gitFl in files['file']:
-                response += Markup(self.formatFileContentWrapper(gitFl.name, base64.b64decode(gitFl.content), int(var['GITSPEAKER_GH_MARKDOWNLINESNUMBER']), int(var['GITSPEAKER_GH_CODELINESNUMBER']) ).decode('utf-8'))
-        else:
-            response = Markup(self.formatFileContentWrapper(files['file'].name, base64.b64decode(files['file'].content), int(var['GITSPEAKER_GH_MARKDOWNLINESNUMBER']), int(var['GITSPEAKER_GH_CODELINESNUMBER']) ).decode('utf-8'))
+        for gitFl in files:
+            response += Markup(self.formatFileContentWrapper(gitFl.name, base64.b64decode(gitFl.content), int(var['GITSPEAKER_GH_MARKDOWNLINESNUMBER']), int(var['GITSPEAKER_GH_CODELINESNUMBER']) ).decode('utf-8'))
+    
         return response
 
     def formatFileContent(self, filename, content):
