@@ -45,34 +45,9 @@
     <![endif]-->
     <script type="text/javascript">
       function urlSanitize(url){
-        url = url.replace("https://", "");
-        url = url.replace("http://", "");
-        url = url.replace('www.github.com','')
-        url = url.replace('github.com','')
-
-        if(url.slice(-1)[0] == "/"){
-          url = url.substring(url.length -1, '')
-        }
-
-        arraySplit = url.split('/')
-        if(arraySplit.length > 2){
-            urlEnd = arraySplit.join('/')
-            if (urlEnd[0] == '/'){
-              return urlEnd
-            }else{
-              return "/"+urlEnd
-            } 
-        }else if(arraySplit.length == 2 && arraySplit[0] != ""){
-          urlEnd = arraySplit.join('/')
-            if (urlEnd[0] == '/'){
-              return urlEnd
-            }else{
-              return "/"+urlEnd
-            } 
-        }else{
-          return false
-        }
+        return new URL(str).pathname;
       }
+      
       function openSlide(){
         repositoryUrl = urlSanitize(document.getElementById('inputRepositoryUrl').value);
         slideType = document.getElementById("selectSlideType").value;
