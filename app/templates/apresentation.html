@@ -38,32 +38,39 @@
           height: 2em;
           width: 6.5em;
         }
+        #error {
+            color: rgb(255, 255, 255);
+            text-align: center;
+            margin-top: 100px;
+            font-size: 30px;
+        }
+        .hide{
+          display: none;
+        }
+
+      .loader{
+        width: 100%;
+        text-align: center;
+        padding: 1em;
+        margin-top: 100px;
+        text-align: center;
+        padding: 1em;
+        vertical-align: top;
+      }
+
+      /*
+        Set the color of the icon
+      */
+      svg path,
+      svg rect{
+        fill: #fff;
+      }
     </style>
     <!--Add support for earlier versions of Internet Explorer -->
     <!--[if lt IE 9]>
     <script src="/static/lib/js/html5shiv.js"></script>
     <![endif]-->
-    <script type="text/javascript">
-      function urlSanitize(str){
-        return new URL(str).pathname;
-      }
-      
-      function openSlide(){
-        repositoryUrl = urlSanitize(document.getElementById('inputRepositoryUrl').value);
-        slideType = document.getElementById("selectSlideType").value;
-        if(repositoryUrl){
-          if(slideType == 'normal'){
-            url = repositoryUrl
-          }else{
-            url = 'wrapper'+repositoryUrl
-          }
-          window.open(url, '_blank');    
-        }else{
-          alert('URL, are missing more params!')
-        } 
-      }
-
-    </script>
+    
     <script>
     if (window.location.search.match(/print-pdf/gi)) {
       var link = document.createElement('link');
@@ -87,6 +94,32 @@
         <button id="buttonOpenRepositoryUrl" onclick="openSlide()" type="button">Go!</button>
       </form>
     </div>
+    <div id='error' class="hide"> Desculpe houve algum erro!</div>
+    <div class="loader hide" title="4">
+      <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+         width="24px" height="30px" viewBox="0 0 24 30" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+        <rect x="0" y="0" width="4" height="10" fill="#333">
+          <animateTransform attributeType="xml"
+            attributeName="transform" type="translate"
+            values="0 0; 0 20; 0 0"
+            begin="0" dur="0.6s" repeatCount="indefinite" />
+        </rect>
+        <rect x="10" y="0" width="4" height="10" fill="#333">
+          <animateTransform attributeType="xml"
+            attributeName="transform" type="translate"
+            values="0 0; 0 20; 0 0"
+            begin="0.2s" dur="0.6s" repeatCount="indefinite" />
+        </rect>
+        <rect x="20" y="0" width="4" height="10" fill="#333">
+          <animateTransform attributeType="xml"
+            attributeName="transform" type="translate"
+            values="0 0; 0 20; 0 0"
+            begin="0.4s" dur="0.6s" repeatCount="indefinite" />
+        </rect>
+      </svg>
+    </div>
+    
+
     <div class="reveal">
         <div class="slides">
             <section>
@@ -105,6 +138,7 @@
     </div>
     <script src="/static/lib/js/head.min.js"></script>
     <script src="/static/js/reveal.js"></script>
+    <script src="http://code.jquery.com/jquery-1.9.0.js"></script>
     <script>
     // Full list of configuration options available here:
     // https://github.com/hakimel/reveal.js#configuration
@@ -162,6 +196,54 @@
         }
       }]
     });
+  Reveal.addEventListener( 'ready', function( event ) {
+        //Reveal.add = function( content = '',index = -1 ){ 
+        Reveal.add = function( content ,index ){ 
+            dom = {},
+
+            dom.slides = document.querySelector( '.reveal .slides' );
+            var newSlide = document.createElement( 'section' );
+            if( index === -1 ) { //adding slide to end
+                newSlide.classList.add( 'future' );
+                dom.slides.appendChild(newSlide);
+                document.querySelector( '.navigate-right' ).classList.add( 'enabled' ); //just enable it, even if it is
+            } else if( index > Reveal.getIndices().h ) {
+                newSlide.classList.add( 'future' );
+                dom.slides.insertBefore(newSlide,dom.slides.querySelectorAll('section:nth-child('+(index+1)+')')[0]);
+            } else if( index <= Reveal.getIndices().h ) {
+                newSlide.classList.add( 'past' );
+                dom.slides.insertBefore(newSlide,dom.slides.querySelectorAll('section:nth-child('+(index+1)+')')[0]);
+                Reveal.next();
+            }
+            newSlide.innerHTML = content;
+        };
+        Reveal.remove = function( index ){ 
+            dom = {},
+
+            dom.wrapper = document.querySelector( '.reveal' );
+            dom.slides = document.querySelector( '.reveal .slides' );
+            var target = (dom.wrapper.querySelectorAll('.slides > section:nth-child('+(index+1)+')')[0]) ? dom.wrapper.querySelectorAll('.slides > section:nth-child('+(index+1)+')')[0] : false;
+
+            if( index === -1 ) {
+                if (Reveal.isLastSlide()) Reveal.prev();
+                dom.slides.removeChild(dom.wrapper.querySelectorAll('.slides > section')[dom.wrapper.querySelectorAll('.slides > section').length-1]);
+                if (Reveal.isLastSlide()) document.querySelector( '.navigate-right' ).classList.remove( 'enabled' );
+            } else if( index > Reveal.getIndices().h && target ) {
+                dom.slides.removeChild(target);
+                if (Reveal.getIndices().h == dom.wrapper.querySelectorAll('.slides > section').length-1) document.querySelector( '.navigate-right' ).classList.remove( 'enabled' );
+            } else if( index < Reveal.getIndices().h && target ) {
+                dom.slides.removeChild(target);
+                location.hash = '/'+parseInt(Reveal.getIndices().h-1);
+            } else if( index == Reveal.getIndices().h && target ) {
+                if (index == 0) {
+                    Reveal.next();
+                    document.querySelector( '.navigate-left' ).classList.remove( 'enabled' );
+                } else Reveal.prev();
+                dom.slides.removeChild(target);
+                if( dom.wrapper.querySelectorAll('.slides > section').length == index) document.querySelector( '.navigate-right' ).classList.remove( 'enabled' );
+            }
+        };
+    } );
   </script>
   <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -172,6 +254,66 @@
     ga('create', 'UA-68149662-1', 'auto');
     ga('send', 'pageview');
   </script>
+  <script type="text/javascript">
+
+      function urlSanitize(str){
+        return new URL(str).pathname;
+      }
+      
+      function openSlide(){
+        removeHome();
+        getSlide();
+
+        //repositoryUrl = urlSanitize(document.getElementById('inputRepositoryUrl').value);
+        //slideType = document.getElementById("selectSlideType").value;
+        //if(repositoryUrl){
+        //  if(slideType == 'normal'){
+        //    url = repositoryUrl
+        //  }else{
+        //    url = 'wrapper'+repositoryUrl
+        //  }
+        //  window.open(url, '_blank');    
+        //}else{
+        //  alert('URL, are missing more params!')
+        //} 
+      }
+
+      function getSlide(){
+
+        jQuery.ajaxSetup({
+          beforeSend: function() {
+             removeClassBySelector("hide",".loader");
+          },
+          complete: function(){
+             addClassBySelector("hide",".loader");
+          }
+        });
+
+        $.get("http://0.0.0.0:4000/a", function(data, status){
+          if(status != "success"){
+            removeClassBySelector('hide',"#error");
+          }{
+            alert('sim');
+            Reveal.add('delermando', -1);
+            Reveal.add('salmo', -1);
+          }
+        });
+      };
+
+      function removeHome(){
+        $("#formOpenUrl").remove();
+        $(".reveal > .slides > section").remove();
+      }
+
+      function removeClassBySelector( cssClass, selector ){
+        $( selector ).removeClass(cssClass);
+      }
+
+      function addClassBySelector(cssClass, selector ){
+        $( selector ).addClass(cssClass);
+      }
+
+    </script>
 </body>
 </html>
  
