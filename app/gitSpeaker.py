@@ -66,3 +66,6 @@ class GitSpeaker(object):
 
     def returnFileList(self, status, message, fileList):
         return jsonify(self.formatJson(status, message, {"files": fileList}))
+    
+    def returnFileContent(self, status, message, content):
+        return jsonify(self.formatJson(status, message, {"content": content}))
