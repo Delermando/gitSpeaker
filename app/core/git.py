@@ -77,7 +77,6 @@ class Git(object):
         git = self.getGithubUser(username, password)
         user = self.getSearcUser(git, searchUser)
         repository = self.getRepository(user, searchRepo)
-        print(username, password)
         branch = self.getBranch(repository, branchName)
         treeFiles = self.getTree(repository, branch.commit.sha, True)
         fileDict = self.extractFileListInfo(treeFiles)
@@ -85,6 +84,18 @@ class Git(object):
         filesFromPath = self.getFilesFromPath(fileDictRemovedFolders, path)
         return self.removeFilesInIgnoreList(filesFromPath, ignoreList)
         # return self.getFileContentsByList(repository, clearDict)
+
+    def getContent(self, username, password, searchUser, searchRepo, path, branchName, ignoreList):
+        git = self.getGithubUser(username, password)
+        user = self.getSearcUser(git, searchUser)
+        repository = self.getRepository(user, searchRepo)
+        branch = self.getBranch(repository, branchName)
+        treeFiles = self.getTree(repository, branch.commit.sha, True)
+        fileDict = self.extractFileListInfo(treeFiles)
+        fileDictRemovedFolders = self.removeFolderFromList(fileDict)
+        filesFromPath = self.getFilesFromPath(fileDictRemovedFolders, path)
+        clearDict = self.removeFilesInIgnoreList(filesFromPath, ignoreList)
+        return self.getFileContentsByList(repository, clearDict)
 
     def removeFolderFromList(self, filelist):
         result = {}
