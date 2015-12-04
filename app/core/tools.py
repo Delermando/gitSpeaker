@@ -23,7 +23,10 @@ class Tools(object):
 
             
     def getFileExtension(self, filename):
-        return filename.split('.')[1]
+        if "." in filename:
+            return filename.split('.')[1]
+        else:
+            return ""
 
     def getLocalContent( self, urlPath ):
         return open(urlPath).read().decode('utf-8')
