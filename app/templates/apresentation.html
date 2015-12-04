@@ -44,10 +44,28 @@
     <script src="/static/lib/js/html5shiv.js"></script>
     <![endif]-->
     <script type="text/javascript">
-      function urlSanitize(str){
-        return new URL(str).pathname;
+
+    function getRepositoryUrl(gitUrl){
+        urlEnd = "";
+        site = "http://github"
+        if(gitUrl.search(site) == -1) {
+          if (gitUrl[0] == "/"){
+            urlEnd = site+gitUrl;
+          }else{
+            urlEnd = site+"/"+gitUrl;
+          }
+        }else{
+          urlEnd = gitUrl;
+        }  
+        return urlEnd;
+    }
+
+      function urlSanitize(gitUrl){
+        return new URL(getRepositoryUrl(gitUrl)).pathname;
       }
       
+
+
       function openSlide(){
         repositoryUrl = urlSanitize(document.getElementById('inputRepositoryUrl').value);
         slideType = document.getElementById("selectSlideType").value;
@@ -79,7 +97,7 @@
 <body>
     <div id='formOpenUrl'>
       <form>
-        <input id="inputRepositoryUrl" type="text" name="name" placeholder="Repository URL" />
+        <input id="inputRepositoryUrl" type="text" name="name" placeholder="https://github.com/usuario/repositorio/pasta/..." />
         <select id="selectSlideType">
           <option value="normal">Normal</option>
           <option value="wrapper">Wrapper</option>
