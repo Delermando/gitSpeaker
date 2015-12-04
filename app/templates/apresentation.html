@@ -289,13 +289,14 @@
           }
         });
 
-        $.get("http://0.0.0.0:4000/a", function(data, status){
+        $.get("http://0.0.0.0:4000/v1/content/Delermando/telecine/telecine_nerd/telecine/settings.py", function(data, status){
+          //var json = JSON.parse(data);
           if(status != "success"){
             removeClassBySelector('hide',"#error");
           }{
-            alert('sim');
             Reveal.add('delermando', -1);
             Reveal.add('salmo', -1);
+            Reveal.add(data.response.data.content, -1);
           }
         });
       };
