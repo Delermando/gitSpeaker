@@ -48,7 +48,7 @@
     function getRepositoryUrl(gitUrl){
         urlEnd = "";
         site = "http://github"
-        if(gitUrl.search(site) == -1) {
+        if(gitUrl.search(site) == -1  || gitUrl.search("https://github") == -1 ) {
           if (gitUrl[0] == "/"){
             urlEnd = site+gitUrl;
           }else{
