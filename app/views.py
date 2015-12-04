@@ -1,8 +1,8 @@
+from flask import render_template
 from gitSpeaker import GitSpeaker
 from app import *
 
 # from flask import Markup
-# import base64
 
 
 GitSpeaker = GitSpeaker()
@@ -24,7 +24,6 @@ def slide(path):
     return GitSpeaker.returnFileList(200, "", gitFiles)
 
 
-
 @app.route('/v1/list/', defaults={'path': ''},  methods=['GET'])
 @app.route('/v1/list/<path:path>',  methods=['GET'])
 def fileList(path):
@@ -33,6 +32,11 @@ def fileList(path):
     gitFiles = Git.getFileList(var['GITSPEAKER_GH_USERNAME'], var['GITSPEAKER_GH_PASSWORD'], urlParams['user'], urlParams['repository'], urlParams['path'], 'master', ignorelist)
     return GitSpeaker.returnFileList(200, "", gitFiles)
 
-# @app.route('/wrapper/', defaults={'path': ''})
-# @app.route('/wrapper/<path:path>')
-# def wrapper(path):
+
+@app.route('/v1/content/', defaults={'path': ''},  methods=['GET'])
+@app.route('/v1/content/<path:path>',  methods=['GET'])
+def fileContent(path):
+    urlParams = Git.extractUserRepoInfo(path)
+    gitContents = Git.getContent(var['GITSPEAKER_GH_USERNAME'], var['GITSPEAKER_GH_PASSWORD'], urlParams['user'], urlParams['repository'], urlParams['path'], 'master', ignorelist)
+    content = GitSpeaker.getWrapperFileContents(gitContents)
+    return GitSpeaker.returnFileContent(200, "", content)
