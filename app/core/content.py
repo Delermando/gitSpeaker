@@ -28,7 +28,7 @@ class Content(object):
         for content in listContent:
             if content.count(markSearch) == 1:
                 result.append(content + markEnd)
-                listContent[counter + 1] = markBegin + listContent[counter + 1]
+                listContent[counter] = markBegin + listContent[counter + 1]
             else:
                 result.append(content)
             counter += 1
