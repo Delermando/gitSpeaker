@@ -1,0 +1,11 @@
+python:
+  image: python2.7/heroku
+  container_name: python
+  ports:
+    - "8000:8000"
+  volumes:
+    - ./../app/:/var/www/html/
+    - ./../app/entrypoint.sh:/usr/local/bin/entrypoint.sh
+  env_file:
+    - ./../config/environment
+  #entrypoint: /usr/local/bin/entrypoint.sh
