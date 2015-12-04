@@ -4,23 +4,46 @@ class Content(object):
         contentRange = self.getSlideRange(rowsNumber, contentRowsNumber)
         contentRange.append(contentRowsNumber)
         listContent = self.groupRows(rows, contentRange)        
-        listContent = self.setUncloseMark("/*---","---*/", listContent)
-        listContent = self.closeBacktick('```','```js\n ','```', listContent)
+        listContent = self.setUncloseMark('```','```', listContent)
+        #listContent = self.setUncloseMark("/*---","---*/", listContent)
+        #listContent = self.closeBacktick('```','```js\n ','```', listContent)
         return listContent
 
     def setUncloseMark(self,markBegin, markEnd, listContent):
         result = []
         counter = 0
+
         for content in listContent:
-            if content.count(markBegin) == 1 and content.count(markEnd) == 1:
+            for ct in content.splitlines():
+                    ct = ct.replace(" ","")
+                    if "```" in ct and len(ct) >= 4:
+                        mark = ct+"\n"
+
+
+            if content.count(markBegin) == 0:
                 result.append(content)
-            elif content.count(markBegin) == 1:
-                result.append(content + markEnd)
-                listContent[counter + 1] = markBegin + listContent[counter + 1]
+            elif content.count(markBegin) % 2 == 0:
+                for ct in content.splitlines():
+                    ct = ct.replace(" ","")
+                    if "```" in ct:
+                        if len(ct) >= 4:
+                            result.append(content)
+                        else:
+                            result.append(mark+content+markEnd)
+                        break
             else:
-                result.append(content)
-            counter += 1
-        return result
+                for ct in content.splitlines():
+                    ct = ct.replace(" ","")
+                    if "```" in ct:
+                        if len(ct) >= 4:
+                            result.append(content+markEnd)
+                        else:
+                            result.append(mark+content)
+                        break
+            a = []
+            for r in result:
+                 a.append(r.replace("```bash\n```", ""))
+        return a;
 
     def closeBacktick(self,markSearch, markBegin, markEnd, listContent):
         result = []
