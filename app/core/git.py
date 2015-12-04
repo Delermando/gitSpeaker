@@ -87,7 +87,7 @@ class Git(object):
         fileDict = self.extractFileListInfo(treeFiles)
         fileDictRemovedFolders = self.removeFolderFromList(fileDict)
         filesFromPath = self.getFilesFromPath(fileDictRemovedFolders, path)
-        print(filesFromPath)
+        
         clearDict = self.removeFilesInIgnoreList(filesFromPath, ignoreList)
         return self.getFileContentsByList(repository, clearDict)
 
@@ -109,7 +109,7 @@ class Git(object):
                 for key, value in filelist.iteritems():
                     if key.count(path+'/') >= 1:
                         filesInFolder[key] = value
-                print(filesInFolder)
+                
                 if len(filesInFolder) >= 1:
                     result = filesInFolder
                 else:
