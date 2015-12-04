@@ -17,7 +17,7 @@ def wrapper(path):
     var = Tools.getEnviromentVar()
     urlParams = Git.extractUserRepoInfo(path)
     ignorelist = Tools.getIgnoreList('ignorelist.json')
-    GitSpeaker.saveUrlRepo(path)
+    #GitSpeaker.saveUrlRepo(path)
 
     if var['GITSPEAKER_GH_ENVIRONMENT'] == 'prod':
         gitFiles = Git.getContents(var['GITSPEAKER_GH_USERNAME'], var['GITSPEAKER_GH_PASSWORD'], urlParams['user'], urlParams['repository'], urlParams['path'], 'master', ignorelist)
@@ -37,7 +37,7 @@ def slide(path):
     var = Tools.getEnviromentVar()
     ignorelist = Tools.getIgnoreList('ignorelist.json')
     urlParams = Git.extractUserRepoInfo(path)
-    GitSpeaker.saveUrlRepo(path)
+    #GitSpeaker.saveUrlRepo(path)
 
     if var['GITSPEAKER_GH_ENVIRONMENT'] == 'prod':
         gitFiles = Git.getContents(var['GITSPEAKER_GH_USERNAME'], var['GITSPEAKER_GH_PASSWORD'], urlParams['user'], urlParams['repository'], urlParams['path'], 'master', ignorelist)
