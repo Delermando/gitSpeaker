@@ -8,6 +8,7 @@ MarkupSafe==0.23
 pbr==1.8.0
 psycopg2==2.6.1
 PyGithub==1.25.2
+python-memcached==1.57
 six==1.9.0
 SQLAlchemy==1.0.8
 sqlalchemy-migrate==0.10.0
